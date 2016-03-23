@@ -247,7 +247,7 @@ def _clean_comp(comp, Kthr, L, thld=None):
     return comp, thld
 
     
-def remove_strong_artifacts(data, A, icaEEG, Comp, Kthr=1.25, F=256,
+def remove_strong_artifacts(icaEEG, Comp, Kthr=1.25, F=256,
                             Cthr=None, num_mp_procs=0):
     """
     % This function denoise high amplitude artifacts (e.g. ocular) and remove them from the
@@ -487,14 +487,13 @@ class WICA(object):
         # remove strong artifacts
         if (not self._pure_range[0] is None) or (not self._pure_range[1] is None):
             # figure out the thresh for the range
-            Cthr = remove_strong_artifacts(self._data[:,self._pure_range[0]:self._pure_range[1]], self.ICA_weights,
-                                           self._components[:,self._pure_range[0]:self._pure_range[1]],
+            Cthr = remove_strong_artifacts(self._components[:,self._pure_range[0]:self._pure_range[1]],
                                            comp_inds, Kthr,
                                            self._samplerate,
                                            num_mp_procs=num_mp_procs)
         else:
             Cthr = None
-        Cthr = remove_strong_artifacts(self._data,self.ICA_weights,self._components, 
+        Cthr = remove_strong_artifacts(self._components,
                                        comp_inds, Kthr,
                                        self._samplerate, Cthr,
                                        num_mp_procs=num_mp_procs)

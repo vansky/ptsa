@@ -67,12 +67,12 @@ def swt(data, wavelet, level=None):
             odd_indices = indices[1::2] 
             
             # get the even
-            (cA1,cD1) = pywt.dwt(idata[indices], wavelet, 'per')
+            (cA1,cD1) = pywt.dwt(idata[indices], wavelet, 'periodization')
             cA[even_indices] = cA1
             cD[even_indices] = cD1
 
             # then the odd
-            (cA1,cD1) = pywt.dwt(np.roll(idata[indices],-1), wavelet, 'per')
+            (cA1,cD1) = pywt.dwt(np.roll(idata[indices],-1), wavelet, 'periodization')
             cA[odd_indices] = cA1
             cD[odd_indices] = cD1
 
@@ -120,8 +120,8 @@ def iswt(coefficients, wavelet):
 
             # perform the inverse dwt on the selected indices,
             # making sure to use periodic boundary conditions
-            x1 = pywt.idwt(output[even_indices], cD[even_indices], wavelet, 'per') 
-            x2 = pywt.idwt(output[odd_indices], cD[odd_indices], wavelet, 'per') 
+            x1 = pywt.idwt(output[even_indices], cD[even_indices], wavelet, 'periodization') 
+            x2 = pywt.idwt(output[odd_indices], cD[odd_indices], wavelet, 'periodization') 
 
             # perform a circular shift right
             x2 = np.roll(x2, 1)

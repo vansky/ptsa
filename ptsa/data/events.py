@@ -97,12 +97,15 @@ class Events(np.recarray):
             if self.dtype.fields.has_key(name):
                 # already exists
                 raise ValueError('Field "'+name+'" already exists.')
-            
+
             # append the array and name
             if(isinstance(data,np.dtype)|
-               isinstance(data,type)|isinstance(data,str)):
+               isinstance(data,type)):
                 # add empty array the length of the data
                 arrays.append(np.empty(len(self),data))
+            elif isinstance(data,str):
+                # populate the string-like data in an array
+                arrays.append(np.full(len(self),data,dtype='|S{:d}'.format(len(data))))
             else:
                 # add the data as an array
                 arrays.append(data)
